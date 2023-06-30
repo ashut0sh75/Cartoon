@@ -25,10 +25,12 @@ The developers can also contribute in this project by creating a Machine Learnin
 
 
 ### Original
+<img src="![Original](https://github.com/ashut0sh75/Cartoon/assets/116083957/f050a587-0fea-4b93-b806-a8c88420b946)" width="300" height="200">
  ![Original](https://github.com/ashut0sh75/Cartoon/assets/116083957/f050a587-0fea-4b93-b806-a8c88420b946)
 
 ### Cartoon Image
- ![CartoonImage](https://github.com/ashut0sh75/Cartoon/assets/116083957/a9f32b65-0ea8-464b-b2a4-bd8a65a4a66a)
+<img src="![CartoonImage](https://github.com/ashut0sh75/Cartoon/assets/116083957/a9f32b65-0ea8-464b-b2a4-bd8a65a4a66a)" width="300" height="200">
+ 
 
 
 
