@@ -23,7 +23,7 @@
         <activity
             android:name=".Sp_Screen"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
