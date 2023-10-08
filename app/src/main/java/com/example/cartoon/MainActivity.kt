@@ -89,7 +89,10 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(
+                this@MainActivity,
+                "No image selected",FancyToast.LENGTH_LONG,
+                FancyToast.WARNING,true).show()
             return
         }
 
@@ -112,7 +115,10 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(
+                this@MainActivity,
+                "No image selected",FancyToast.LENGTH_LONG,
+                FancyToast.WARNING,true).show()
             return
         }
 
