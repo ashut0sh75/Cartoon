@@ -89,5 +89,12 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    //Toast
+
+        implementation 'io.github.shashank02051997:FancyToast:2.0.2'
+
+
+
+
 
 }
