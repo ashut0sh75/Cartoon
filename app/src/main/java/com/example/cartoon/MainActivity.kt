@@ -1,5 +1,6 @@
 package com.example.cartoon
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -11,16 +12,23 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import androidx.appcompat.widget.SwitchCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.cartoon.ml.WhiteboxCartoonGanInt8
+import com.shashank.sony.fancytoastlib.FancyToast
 import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+
 
 class MainActivity : ComponentActivity() {
 
@@ -41,10 +49,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize image view, convert button, and save button
+        // Initialize image view, convert button, and save button,Switch button
         imageView = findViewById(R.id.imageView)
         convertButton = findViewById(R.id.Convert)
         saveButton = findViewById(R.id.Save)
+
+
+
+
 
         // Set click listener for selecting an image
         findViewById<Button>(R.id.selectImagebtn).setOnClickListener {
@@ -77,7 +89,10 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(
+                this@MainActivity,
+                "No image selected",FancyToast.LENGTH_LONG,
+                FancyToast.WARNING,true).show()
             return
         }
 
@@ -100,7 +115,10 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(
+                this@MainActivity,
+                "No image selected",FancyToast.LENGTH_LONG,
+                FancyToast.WARNING,true).show()
             return
         }
 
@@ -131,7 +149,7 @@ class MainActivity : ComponentActivity() {
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
                         resource: Bitmap,
-                        transition: Transition<in Bitmap>?
+                        transition: Transition<in Bitmap>?,
                     ) {
                         var outputStream: OutputStream? = null
                         try {
@@ -148,18 +166,15 @@ class MainActivity : ComponentActivity() {
                                 null
                             )
 
-                            Toast.makeText(
+                            FancyToast.makeText(
                                 this@MainActivity,
-                                "Image saved successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                "Image Saved",FancyToast.LENGTH_LONG,
+                                FancyToast.SUCCESS,true).show()
+
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Failed to save image",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            FancyToast.makeText(this@MainActivity,"Failed to save image!",FancyToast.LENGTH_LONG,FancyToast.ERROR,true).show()
+
                         } finally {
                             outputStream?.close()
                         }
@@ -170,7 +185,13 @@ class MainActivity : ComponentActivity() {
                     }
                 })
         } else {
-            Toast.makeText(this, "External storage is not available", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(
+                this,
+                "External storage is not available",
+                FancyToast.LENGTH_LONG,
+                FancyToast.WARNING,
+                true
+            ).show()
         }
     }
 
@@ -225,6 +246,7 @@ class MainActivity : ComponentActivity() {
         // Create a TensorImage from the Bitmap
         return TensorImage.fromBitmap(bitmap)
     }
+
 }
 
 

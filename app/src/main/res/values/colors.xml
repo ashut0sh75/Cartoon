@@ -11,4 +11,12 @@
 
     <color name="splash_background">#3498db</color>
     <color name="splash_text_color">#ffffff</color>
+
+
+        <color name="colorPrimary">#007ACC</color>
+        <color name="colorPrimaryDark">#00579D</color>
+        <color name="colorAccent">#FF4081</color>
+        <!-- Add other colors for light mode -->
+
+
 </resources>
