@@ -1,12 +1,19 @@
 package com.example.cartoon
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -19,6 +26,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -38,6 +48,11 @@ class MainActivity : ComponentActivity() {
 
         // Directory name for saving cartoon images
         private const val DIRECTORY_NAME = "CartoonImages"
+
+        //channel for notication
+        private  val CHANNEL_ID ="channelId"
+        private  val CHANNEL_NAME ="channelName"
+        private  val notificationId=0
     }
 
 
@@ -54,10 +69,6 @@ class MainActivity : ComponentActivity() {
         convertButton = findViewById(R.id.Convert)
         saveButton = findViewById(R.id.Save)
 
-
-
-
-
         // Set click listener for selecting an image
         findViewById<Button>(R.id.selectImagebtn).setOnClickListener {
             fetchImageFromStorage()
@@ -72,9 +83,51 @@ class MainActivity : ComponentActivity() {
         saveButton.setOnClickListener {
             saveCartoonedImage()
         }
+//Notification part
+        createnotificationchannel()
+        val notification= NotificationCompat.Builder(this,CHANNEL_ID)
+            .setContentTitle("Photo is saved")
+            .setContentText("congratulation")
+            .setSmallIcon(R.drawable.baseline_notifications_24)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        val notificationManager = NotificationManagerCompat.from(this)
+
+
+        saveButton.setOnClickListener {
+            val drawable = imageView.drawable
+            if (drawable == null) {
+                FancyToast.makeText(
+                    this@MainActivity,
+                    "No image selected", FancyToast.LENGTH_LONG,
+                    FancyToast.WARNING, true
+                ).show()
+
+            } else {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    FancyToast.makeText(
+                        this@MainActivity,
+                        "Please give us permision", FancyToast.LENGTH_LONG,
+                        FancyToast.WARNING, true
+                    ).show()
+                }
+
+                notificationManager.notify(notificationId, notification)
+                FancyToast.makeText(
+                    this@MainActivity,
+                    "Image Saved",FancyToast.LENGTH_LONG,
+                    FancyToast.SUCCESS,true).show()
+
+            }
+        }
+
+
     }
-
-
     private fun fetchImageFromStorage() {
         // Create an intent to pick an image from external storage
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -245,6 +298,20 @@ class MainActivity : ComponentActivity() {
 
         // Create a TensorImage from the Bitmap
         return TensorImage.fromBitmap(bitmap)
+    }
+    //notification push
+    private fun createnotificationchannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(CHANNEL_ID,CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description = "This is my notification channel"
+                lightColor= Color.GRAY
+                enableLights(true)
+
+            }
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
     }
 
 }
