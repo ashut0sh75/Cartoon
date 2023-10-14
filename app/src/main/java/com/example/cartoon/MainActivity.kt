@@ -1,7 +1,6 @@
 package com.example.cartoon
 
-import android.Manifest
-import android.annotation.SuppressLint
+
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -19,16 +18,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Switch
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
+
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
