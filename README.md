@@ -80,7 +80,7 @@ Below is the sample output of the current Machine Learning Model.
 
 
  <a name="feedback"></a>
-
+ 
 ## 🌐 Feedback
 
 If you have questions, suggestions, or feedback, feel free to open an [`issue`](https://github.com/ashut0sh75/Cartoon/issues) or initiate discussions.
