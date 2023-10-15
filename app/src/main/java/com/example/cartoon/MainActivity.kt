@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
         private const val DIRECTORY_NAME = "CartoonImages"
     }
 
+    private lateinit var notification: Notification
 
     private lateinit var imageView: ImageView       //Button for ImageView
     private lateinit var convertButton: Button        // Button for Convert Image to cartoon in image view
@@ -48,7 +49,28 @@ class MainActivity : ComponentActivity() {
         saveButton = findViewById(R.id.Save)
 
 
+//
+        notification = Notification(this)
+         saveButton.setOnClickListener{
+            // Get the drawable from the ImageView
+            val drawable = imageView.drawable
 
+            // Check if no image is selected
+            if (drawable == null) {
+                FancyToast.makeText(
+                    this@MainActivity,
+                    "No image selected",FancyToast.LENGTH_LONG,
+                    FancyToast.WARNING,true).show()
+
+            }else{  notification.sendNotification(
+                "Photo is saved",
+                "Congratulations!",
+                R.drawable.baseline_notifications_24,
+                0
+            )}
+
+             saveCartoonedImage()
+         }
 
 
         // Set click listener for selecting an image
@@ -62,9 +84,7 @@ class MainActivity : ComponentActivity() {
         }
 
         // Set click listener for saving the cartoonized image
-        saveButton.setOnClickListener {
-            saveCartoonedImage()
-        }
+
     }
 
 
