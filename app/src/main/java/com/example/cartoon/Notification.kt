@@ -1,5 +1,6 @@
 package com.example.cartoon
 import android.Manifest
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -15,6 +16,7 @@ class Notification(private val context: Context) {
 
     private val CHANNEL_ID = "channelId"
     private val CHANNEL_NAME = "channelName"
+    private val REQUEST_NOTIFICATION_PERMISSION = 123 // You can choose any unique integer value
 
     init {
         createNotificationChannel()
@@ -34,11 +36,13 @@ class Notification(private val context: Context) {
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            FancyToast.makeText(
-                context,
-                "No image selected", FancyToast.LENGTH_LONG,
-                FancyToast.WARNING,true).show()
 
+            // Permission not granted, request it from the user.
+            ActivityCompat.requestPermissions(
+                context as Activity, // Make sure 'context' is an Activity.
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                REQUEST_NOTIFICATION_PERMISSION
+            )
         }
         notificationManager.notify(notificationId, notification)
     }

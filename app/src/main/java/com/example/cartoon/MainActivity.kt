@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
         saveButton = findViewById(R.id.Save)
 
 
-//
+//Notification
         notification = Notification(this)
          saveButton.setOnClickListener{
             // Get the drawable from the ImageView
