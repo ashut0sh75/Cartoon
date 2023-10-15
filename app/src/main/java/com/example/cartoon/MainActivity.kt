@@ -51,6 +51,8 @@ class MainActivity : ComponentActivity() {
 
 //
         notification = Notification(this)
+
+
          saveButton.setOnClickListener{
             // Get the drawable from the ImageView
             val drawable = imageView.drawable
@@ -183,6 +185,9 @@ class MainActivity : ComponentActivity() {
                                 this@MainActivity,
                                 "Image Saved",FancyToast.LENGTH_LONG,
                                 FancyToast.SUCCESS,true).show()
+
+
+
 
                         } catch (e: Exception) {
                             e.printStackTrace()
