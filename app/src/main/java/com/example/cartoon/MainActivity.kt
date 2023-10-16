@@ -1,14 +1,19 @@
 package com.example.cartoon
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.MotionEvent
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
@@ -39,9 +44,23 @@ class MainActivity : ComponentActivity() {
     private lateinit var convertButton: Button        // Button for Convert Image to cartoon in image view
     private lateinit var saveButton: Button          // Button to save the converted image
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        hideSystemBars()
+
+        window.decorView.setOnTouchListener { _, event ->
+            when (event.action) {
+                // Detect user touch and hide system bars
+                MotionEvent.ACTION_DOWN -> {
+                    hideSystemBars()
+                    true
+                }
+                else -> false
+            }
+        }
 
         // Initialize image view, convert button, and save button,Switch button
         imageView = findViewById(R.id.imageView)
@@ -263,6 +282,22 @@ class MainActivity : ComponentActivity() {
 
         // Create a TensorImage from the Bitmap
         return TensorImage.fromBitmap(bitmap)
+    }
+
+    private fun hideSystemBars() {
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
     }
 
 }
