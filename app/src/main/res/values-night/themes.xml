@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyApp" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="MyApp" parent="Theme.AppCompat.DayNight.NoActionBar"/>
 
-    </style>
-    
-    
+
+
     <style name="SCREEN">
         <item name="android:background">#1B1B1B</item>
-
     </style>
 
     <style name="TEXT">
