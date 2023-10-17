@@ -145,7 +145,7 @@ class Notification(private val context: Context) {
     }
 
     companion object {
-        private const val PERMISSION_REQUEST_CODE = 1
+        private const val PERMISSION_REQUEST_CODE = 128956
     }
 }
 
