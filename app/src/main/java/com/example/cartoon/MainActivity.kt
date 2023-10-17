@@ -11,6 +11,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -59,19 +60,19 @@ class MainActivity : ComponentActivity() {
 
             // Check if no image is selected
             if (drawable == null) {
-                FancyToast.makeText(
-                    this@MainActivity,
-                    "No image selected",FancyToast.LENGTH_LONG,
-                    FancyToast.WARNING,true).show()
+                Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
 
             }else{  notification.sendNotification(
                 "Photo is saved",
                 "Congratulations!",
                 R.drawable.baseline_notifications_24,
                 0
-            )}
+            )
+                saveCartoonedImage()
 
-             saveCartoonedImage()
+            }
+
+
          }
 
 
@@ -130,10 +131,7 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            FancyToast.makeText(
-                this@MainActivity,
-                "No image selected",FancyToast.LENGTH_LONG,
-                FancyToast.WARNING,true).show()
+            Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -181,17 +179,16 @@ class MainActivity : ComponentActivity() {
                                 null
                             )
 
-                            FancyToast.makeText(
-                                this@MainActivity,
-                                "Image Saved",FancyToast.LENGTH_LONG,
-                                FancyToast.SUCCESS,true).show()
+
+                            Toast.makeText(this@MainActivity, "Image Saved", Toast.LENGTH_LONG).show()
+
 
 
 
 
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            FancyToast.makeText(this@MainActivity,"Failed to save image!",FancyToast.LENGTH_LONG,FancyToast.ERROR,true).show()
+                            Toast.makeText(this@MainActivity, "Failed to save image!", Toast.LENGTH_LONG).show()
 
                         } finally {
                             outputStream?.close()

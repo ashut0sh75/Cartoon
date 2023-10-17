@@ -2,11 +2,11 @@
 <resources>
     <style name="MyApp" parent="Theme.AppCompat.DayNight.NoActionBar">
 
-
     </style>
 
     <style name="SCREEN">
         <item name="android:background">@drawable/dinamic_bg</item>
+
     </style>
 
     <style name="TEXT">
