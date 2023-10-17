@@ -56,7 +56,7 @@ After working on the task contributer needs to generate a pull request. After th
   
 - ML model can only be contributed after the model is converted into `.tflite` file. No other format will be accepted. So, Developers need to keep this in mind that if the want to contribute a ml model they are required to convert it into a ".tflite" file.
 
-  #### Please make PR after the issue has been assigned to you. No PR will be accepted if issue has not been assigned.
+  #### If you see that the issue has been assigned to anyone then you can ask for for it. Please make PR after the issue has been assigned to you. No PR will be accepted if issue has not been assigned.
 
 
 <a name="sample"></a>
