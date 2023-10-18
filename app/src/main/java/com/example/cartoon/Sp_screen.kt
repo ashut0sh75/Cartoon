@@ -32,7 +32,9 @@ class Sp_Screen : AppCompatActivity() {
     }
 
     companion object {
+        private const val IMAGE_ANIMATION_DELAY: Long = 1000 // 1 second (adjust as needed)
         private const val SPLASH_DELAY: Long = 3000 // 3 seconds
+        private const val TEXT_ANIMATION_DELAY: Long = 500 // 0.5 seconds (adjust as needed)
     }
 
     private fun startAnimation(
