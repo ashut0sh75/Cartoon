@@ -16,6 +16,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         // Request code for image selection
-        private const val REQUEST_CODE_IMAGE = 1
+        private const val REQUEST_CODE_IMAGE = 178956
 
         // Directory name for saving cartoon images
         private const val DIRECTORY_NAME = "CartoonImages"
@@ -68,30 +69,32 @@ class MainActivity : ComponentActivity() {
         saveButton = findViewById(R.id.Save)
 
 
-//
+
         notification = Notification(this)
+        notification.requestNotificationPermission()
 
 
-         saveButton.setOnClickListener{
+        saveButton.setOnClickListener {
             // Get the drawable from the ImageView
             val drawable = imageView.drawable
 
             // Check if no image is selected
             if (drawable == null) {
-                FancyToast.makeText(
-                    this@MainActivity,
-                    "No image selected",FancyToast.LENGTH_LONG,
-                    FancyToast.WARNING,true).show()
+                Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
 
-            }else{  notification.sendNotification(
-                "Photo is saved",
-                "Congratulations!",
-                R.drawable.baseline_notifications_24,
-                0
-            )}
+            } else {
+              /*  notification.sendNotification(
+                    "Photo is saved",
+                    "Congratulations!",
+                    R.drawable.baseline_notifications_24,
+                    0
+                )*/
+                saveCartoonedImage()
 
-             saveCartoonedImage()
-         }
+            }
+
+
+        }
 
 
         // Set click listener for selecting an image
@@ -123,10 +126,7 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            FancyToast.makeText(
-                this@MainActivity,
-                "No image selected",FancyToast.LENGTH_LONG,
-                FancyToast.WARNING,true).show()
+            Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -149,10 +149,7 @@ class MainActivity : ComponentActivity() {
 
         // Check if no image is selected
         if (drawable == null) {
-            FancyToast.makeText(
-                this@MainActivity,
-                "No image selected",FancyToast.LENGTH_LONG,
-                FancyToast.WARNING,true).show()
+            Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -200,17 +197,26 @@ class MainActivity : ComponentActivity() {
                                 null
                             )
 
-                            FancyToast.makeText(
-                                this@MainActivity,
-                                "Image Saved",FancyToast.LENGTH_LONG,
-                                FancyToast.SUCCESS,true).show()
 
+                            Toast.makeText(this@MainActivity, "Image Saved", Toast.LENGTH_LONG)
+                                .show()
 
+                           //sending notification
+                            notification.sendNotification(
+                                "Photo is saved",
+                                "Congratulations!",
+                                R.drawable.baseline_notifications_24,
+                                0
+                            )
 
 
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            FancyToast.makeText(this@MainActivity,"Failed to save image!",FancyToast.LENGTH_LONG,FancyToast.ERROR,true).show()
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Failed to save image!",
+                                Toast.LENGTH_LONG
+                            ).show()
 
                         } finally {
                             outputStream?.close()
@@ -222,12 +228,10 @@ class MainActivity : ComponentActivity() {
                     }
                 })
         } else {
-            FancyToast.makeText(
-                this,
+            Toast.makeText(
+                this@MainActivity,
                 "External storage is not available",
-                FancyToast.LENGTH_LONG,
-                FancyToast.WARNING,
-                true
+                Toast.LENGTH_LONG
             ).show()
         }
     }
@@ -303,35 +307,34 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 /** commenting out this section of code because it is not currently in use, if in future anyone wants to
-     * to use it please comment out this section.
-     */
-    /**
-    private fun inferenceWithFp16Model(sourceImage: TensorImage): TensorImage {
-        val model = WhiteboxCartoonGanFp16.newInstance(this)
+ * to use it please comment out this section.
+ */
+/**
+private fun inferenceWithFp16Model(sourceImage: TensorImage): TensorImage {
+val model = WhiteboxCartoonGanFp16.newInstance(this)
 
-        // Runs model inference and gets result.
-        val outputs = model.process(sourceImage)
-        val cartoonizedImage = outputs.cartoonizedImageAsTensorImage
+// Runs model inference and gets result.
+val outputs = model.process(sourceImage)
+val cartoonizedImage = outputs.cartoonizedImageAsTensorImage
 
-        // Releases model resources if no longer used.
-        model.close()
+// Releases model resources if no longer used.
+model.close()
 
-        return cartoonizedImage
-    }
+return cartoonizedImage
+}
 
-    private fun inferenceWithDrModel(sourceImage: TensorImage): TensorImage {
-        val model = WhiteboxCartoonGanDr.newInstance(this)
+private fun inferenceWithDrModel(sourceImage: TensorImage): TensorImage {
+val model = WhiteboxCartoonGanDr.newInstance(this)
 
-        // Runs model inference and gets result.
-        val outputs = model.process(sourceImage)
-        val cartoonizedImage = outputs.cartoonizedImageAsTensorImage
+// Runs model inference and gets result.
+val outputs = model.process(sourceImage)
+val cartoonizedImage = outputs.cartoonizedImageAsTensorImage
 
-        // Releases model resources if no longer used.
-        model.close()
+// Releases model resources if no longer used.
+model.close()
 
-        return cartoonizedImage
-    }
-    */
+return cartoonizedImage
+}
+ */
 
