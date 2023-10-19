@@ -254,11 +254,17 @@ class MainActivity : ComponentActivity() {
             val imageUri = data?.data
 
             // Load the selected image into the ImageView using Glide
-            Glide.with(this)
-                .load(imageUri)
-                .into(imageView)
+            if (imageUri != null) {
+                Glide.with(this)
+                    .load(imageUri)
+                    .into(imageView)
+            }
+
+            // Remove the background by setting it to null
+            imageView.background = null
         }
     }
+
 
 
     private fun inferenceWithInt8Model(sourceImage: TensorImage): TensorImage {
