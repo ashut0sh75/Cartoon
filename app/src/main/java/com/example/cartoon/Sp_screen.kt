@@ -15,45 +15,20 @@ class Sp_Screen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sp_screen)
 
-        val animatedText = findViewById<TextView>(R.id.animatedText)
-        val animatedImage = findViewById<ImageView>(R.id.img)
-
-        // Image animation
-        startAnimation(animatedImage, "translationY", 0f, -200f, 1000, DecelerateInterpolator())
-
-        // Text animation
-        startAnimation(animatedText, "alpha", 0f, 1f, 1000, AccelerateDecelerateInterpolator())
-
-        // Transition to the main activity after a delay
-        Handler().postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+        val textView = findViewById<TextView>(R.id.textView);
+        val ThinkBot = "CARTOON!"
+        val stringBuilder1 = StringBuilder()
+        val t1 = Thread {
+            for (letters in ThinkBot) {
+                stringBuilder1.append(letters)
+                Thread.sleep(250)
+                runOnUiThread {
+                    textView.text = stringBuilder1.toString()
+                }
+            }
+            val jump: Intent = Intent(this@Sp_Screen, MainActivity::class.java)
+            startActivity(jump)
             finish()
-        }, SPLASH_DELAY)
-    }
-
-    companion object {
-        private const val IMAGE_ANIMATION_DELAY: Long = 1000 // 1 second (adjust as needed)
-        private const val SPLASH_DELAY: Long = 3000 // 3 seconds
-        private const val TEXT_ANIMATION_DELAY: Long = 500 // 0.5 seconds (adjust as needed)
-    }
-
-    private fun startAnimation(
-        view: ImageView, property: String, startValue: Float, endValue: Float,
-        duration: Long, interpolator: DecelerateInterpolator
-    ) {
-        val animation = ObjectAnimator.ofFloat(view, property, startValue, endValue)
-        animation.duration = duration
-        animation.interpolator = interpolator
-        Handler().postDelayed({ animation.start() }, IMAGE_ANIMATION_DELAY)
-    }
-
-    private fun startAnimation(
-        view: TextView, property: String, startValue: Float, endValue: Float,
-        duration: Long, interpolator: AccelerateDecelerateInterpolator
-    ) {
-        val animation = ObjectAnimator.ofFloat(view, property, startValue, endValue)
-        animation.duration = duration
-        animation.interpolator = interpolator
-        Handler().postDelayed({ animation.start() }, TEXT_ANIMATION_DELAY)
+        }.start()
     }
 }
