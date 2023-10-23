@@ -21,6 +21,7 @@ import androidx.activity.ComponentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.cartoon.databinding.ActivityMainBinding
 import com.example.cartoon.ml.WhiteboxCartoonGanInt8
 import com.shashank.sony.fancytoastlib.FancyToast
 import org.tensorflow.lite.support.image.TensorImage
@@ -40,15 +41,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private lateinit var notification: Notification
-
-    private lateinit var imageView: ImageView       //Button for ImageView
-    private lateinit var convertButton: Button        // Button for Convert Image to cartoon in image view
-    private lateinit var saveButton: Button          // Button to save the converted image
+    private lateinit var binding : ActivityMainBinding
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         hideSystemBars()
 
@@ -63,20 +62,13 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        // Initialize image view, convert button, and save button,Switch button
-        imageView = findViewById(R.id.imageView)
-        convertButton = findViewById(R.id.Convert)
-        saveButton = findViewById(R.id.Save)
-
-
-
         notification = Notification(this)
         notification.requestNotificationPermission()
 
 
-        saveButton.setOnClickListener {
+        binding.Save.setOnClickListener {
             // Get the drawable from the ImageView
-            val drawable = imageView.drawable
+            val drawable = binding.imageView.drawable
 
             // Check if no image is selected
             if (drawable == null) {
@@ -90,20 +82,17 @@ class MainActivity : ComponentActivity() {
                     0
                 )*/
                 saveCartoonedImage()
-
             }
-
-
         }
 
 
         // Set click listener for selecting an image
-        findViewById<Button>(R.id.selectImagebtn).setOnClickListener {
+        binding.selectImagebtn.setOnClickListener {
             fetchImageFromStorage()
         }
 
         // Set click listener for converting the image to a cartoon
-        convertButton.setOnClickListener {
+        binding.Convert.setOnClickListener {
             convertImageToCartoon()
         }
 
@@ -122,7 +111,7 @@ class MainActivity : ComponentActivity() {
 
     private fun convertImageToCartoon() {
         // Get the drawable from the ImageView
-        val drawable = imageView.drawable
+        val drawable = binding.imageView.drawable
 
         // Check if no image is selected
         if (drawable == null) {
@@ -139,13 +128,13 @@ class MainActivity : ComponentActivity() {
         // Set the cartoonized image in the ImageView using Glide
         Glide.with(this)
             .load(cartoonizedImage.bitmap)
-            .into(imageView)
+            .into(binding.imageView)
     }
 
 
     private fun saveCartoonedImage() {
         // Get the drawable from the ImageView
-        val drawable = imageView.drawable
+        val drawable = binding.imageView.drawable
 
         // Check if no image is selected
         if (drawable == null) {
@@ -257,11 +246,11 @@ class MainActivity : ComponentActivity() {
             if (imageUri != null) {
                 Glide.with(this)
                     .load(imageUri)
-                    .into(imageView)
+                    .into(binding.imageView)
             }
 
             // Remove the background by setting it to null
-            imageView.background = null
+            binding.imageView.background = null
         }
     }
 
