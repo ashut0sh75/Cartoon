@@ -1,33 +1,28 @@
 package com.example.cartoon
 
-import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cartoon.databinding.ActivitySpScreenBinding
 
 class Sp_Screen : AppCompatActivity() {
+    private lateinit var binding : ActivitySpScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sp_screen)
+        binding = ActivitySpScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val textView = findViewById<TextView>(R.id.textView);
         val ThinkBot = "CARTOON!"
-        val stringBuilder1 = StringBuilder()
-        val t1 = Thread {
+        Thread {
             for (letters in ThinkBot) {
-                stringBuilder1.append(letters)
-                Thread.sleep(250)
+                StringBuilder().append(letters)
+                Thread.sleep(250)                                  //0.25 sec for each letter
                 runOnUiThread {
-                    textView.text = stringBuilder1.toString()
+                    binding.txtTitle.text = StringBuilder().toString()
                 }
             }
-            val jump: Intent = Intent(this@Sp_Screen, MainActivity::class.java)
-            startActivity(jump)
+            startActivity(Intent(this@Sp_Screen, MainActivity::class.java))
             finish()
         }.start()
     }
