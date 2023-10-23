@@ -14,12 +14,13 @@ class Sp_Screen : AppCompatActivity() {
         setContentView(binding.root)
 
         val ThinkBot = "CARTOON!"
+        val stringBuilder1 = StringBuilder()
         Thread {
             for (letters in ThinkBot) {
-                StringBuilder().append(letters)
+                stringBuilder1.append(letters)
                 Thread.sleep(250)                                  //0.25 sec for each letter
                 runOnUiThread {
-                    binding.txtTitle.text = StringBuilder().toString()
+                    binding.txtTitle.text = stringBuilder1.toString()
                 }
             }
             startActivity(Intent(this@Sp_Screen, MainActivity::class.java))
