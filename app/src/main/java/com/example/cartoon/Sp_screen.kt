@@ -2,7 +2,6 @@ package com.example.cartoon
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cartoon.databinding.ActivitySpScreenBinding
 
