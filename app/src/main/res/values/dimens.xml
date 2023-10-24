@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="splash_txt_size">80sp</dimen>
+    <dimen name="main_txt_size">30sp</dimen>
+    <dimen name="main_title_txt_size">40sp</dimen>
+    <dimen name="two_fifty_dp">250dp</dimen>
+    <dimen name="two_dp">2dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="fifteen_dp">15dp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
+</resources>

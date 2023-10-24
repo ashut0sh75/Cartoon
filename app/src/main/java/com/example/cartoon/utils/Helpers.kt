@@ -1,4 +1,4 @@
-package com.example.cartoon
+package com.example.cartoon.utils
 
 import android.Manifest
 import android.os.Build
