@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Cartoon</string>
     <string name="cartoon">Cartoon</string>
+    <string name="msg_no_image_selected">No Image selected</string>
 </resources>
