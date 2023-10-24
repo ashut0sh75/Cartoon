@@ -59,29 +59,29 @@ class MainActivity : ComponentActivity() {
         requestPermissions.launch(Helpers.requiredPermissions())
 
 
-        binding.Save.setOnClickListener {
-            // Get the drawable from the ImageView
-            val drawable = binding.imageView.drawable
+        binding.apply {
+            Save.setOnClickListener {
 
-            // Check if no image is selected
-            if (drawable == null) {
-                Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
-
-            } else {
-                saveCartoonedImage()
+                // Check if no image is selected
+                if (binding.imageView.drawable.isNull) {
+                    Toast.makeText(this@MainActivity,   getString(R.string.no_image_selected), Toast.LENGTH_LONG).show()
+                }else{
+                    saveCartoonedImage()
+                }
             }
+            selectImagebtn.setOnClickListener {
+                fetchImageFromStorage.launch("image/*")
+            }
+
+            // Set click listener for converting the image to a cartoon
+            Convert.setOnClickListener {
+                convertImageToCartoon()
+            }
+
         }
 
 
         // Set click listener for selecting an image
-        binding.selectImagebtn.setOnClickListener {
-            fetchImageFromStorage.launch("image/*")
-        }
-
-        // Set click listener for converting the image to a cartoon
-        binding.Convert.setOnClickListener {
-            convertImageToCartoon()
-        }
 
         // Set click listener for saving the cartoonized image
 
@@ -107,118 +107,125 @@ class MainActivity : ComponentActivity() {
 
     private fun convertImageToCartoon() {
         // Get the drawable from the ImageView
-        val drawable = binding.imageView.drawable
-
-        // Check if no image is selected
-        if (drawable == null) {
-            Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
+        if (binding.imageView.drawable.isNull) {
+            // Run if object is null
+            // Check if no image is selected
+            Toast.makeText(this@MainActivity,   getString(R.string.no_image_selected), Toast.LENGTH_LONG).show()
             return
+        } else {
+            // Load the image drawable into a TensorImage for inference
+            // Run if object is not null
+            val drawable =binding.imageView.drawable
+            val sourceImage = drawable.toTensorImage()
+
+            // Perform inference to obtain the cartoonized image
+            val cartoonizedImage = inferenceWithInt8Model(sourceImage)
+
+            // Set the cartoonized image in the ImageView using Glide
+            Glide.with(this)
+                .load(cartoonizedImage.bitmap)
+                .into(binding.imageView)
         }
-
-        // Load the image drawable into a TensorImage for inference
-        val sourceImage = drawable.toTensorImage()
-
-        // Perform inference to obtain the cartoonized image
-        val cartoonizedImage = inferenceWithInt8Model(sourceImage)
-
-        // Set the cartoonized image in the ImageView using Glide
-        Glide.with(this)
-            .load(cartoonizedImage.bitmap)
-            .into(binding.imageView)
     }
 
 
     private fun saveCartoonedImage() {
         // Get the drawable from the ImageView
-        val drawable = binding.imageView.drawable
+
 
         // Check if no image is selected
-        if (drawable == null) {
-            Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
+        if (binding.imageView.drawable.isNull) {
+            Toast.makeText(/* context = */ this@MainActivity, /* text = */
+                getString(R.string.no_image_selected), /* duration = */
+                Toast.LENGTH_LONG).show()
             return
         }
+        else{
+            val drawable = binding.imageView.drawable
+            // Convert the drawable to a TensorImage for saving
+            val sourceImage = drawable.toTensorImage()
 
-        // Convert the drawable to a TensorImage for saving
-        val sourceImage = drawable.toTensorImage()
+            // Check if external storage is available for read and write
+            if (isExternalStorageWritable()) {
+                // Define the directory to save the image
+                val directory = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    DIRECTORY_NAME
+                )
 
-        // Check if external storage is available for read and write
-        if (isExternalStorageWritable()) {
-            // Define the directory to save the image
-            val directory = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                DIRECTORY_NAME
-            )
+                // Create the directory if it doesn't exist
+                if (!directory.exists()) {
+                    directory.mkdirs()
+                }
 
-            // Create the directory if it doesn't exist
-            if (!directory.exists()) {
-                directory.mkdirs()
-            }
+                // Generate a unique filename for the saved image
+                val fileName = "cartoon_${System.currentTimeMillis()}.jpg"
+                val file = File(directory, fileName)
 
-            // Generate a unique filename for the saved image
-            val fileName = "cartoon_${System.currentTimeMillis()}.jpg"
-            val file = File(directory, fileName)
+                // Save the image to the file using Glide
+                Glide.with(this)
+                    .asBitmap()
+                    .load(sourceImage.bitmap)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?,
+                        ) {
+                            var outputStream: OutputStream? = null
+                            try {
+                                // Save the bitmap to the file
+                                outputStream = FileOutputStream(file)
+                                resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                                outputStream.flush()
 
-            // Save the image to the file using Glide
-            Glide.with(this)
-                .asBitmap()
-                .load(sourceImage.bitmap)
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap>?,
-                    ) {
-                        var outputStream: OutputStream? = null
-                        try {
-                            // Save the bitmap to the file
-                            outputStream = FileOutputStream(file)
-                            resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                            outputStream.flush()
-
-                            // Scan the saved image file to make it visible in the gallery
-                            MediaScannerConnection.scanFile(
-                                this@MainActivity,
-                                arrayOf(file.toString()),
-                                null,
-                                null
-                            )
-
-
-                            Toast.makeText(this@MainActivity, "Image Saved", Toast.LENGTH_LONG)
-                                .show()
-
-                           //sending notification
-                            notification.sendNotification(
-                                "Photo is saved",
-                                "Congratulations!",
-                                R.drawable.baseline_notifications_24,
-                                0
-                            )
+                                // Scan the saved image file to make it visible in the gallery
+                                MediaScannerConnection.scanFile(
+                                    this@MainActivity,
+                                    arrayOf(file.toString()),
+                                    null,
+                                    null
+                                )
 
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Failed to save image!",
-                                Toast.LENGTH_LONG
-                            ).show()
+                                Toast.makeText(this@MainActivity, "Image Saved", Toast.LENGTH_LONG)
+                                    .show()
 
-                        } finally {
-                            outputStream?.close()
+                                //sending notification
+                                notification.sendNotification(
+                                    "Photo is saved",
+                                    "Congratulations!",
+                                    R.drawable.baseline_notifications_24,
+                                    0
+                                )
+
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Failed to save image!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                            } finally {
+                                outputStream?.close()
+                            }
                         }
-                    }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        // Not used
-                    }
-                })
-        } else {
-            Toast.makeText(
-                this@MainActivity,
-                "External storage is not available",
-                Toast.LENGTH_LONG
-            ).show()
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            // Not used
+                        }
+                    })
+            } else {
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.external_storage_is_not_available),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
+
+
     }
 
 

@@ -2,4 +2,6 @@
     <string name="app_name">Cartoon</string>
     <string name="cartoon">Cartoon</string>
     <string name="msg_no_image_selected">No Image selected</string>
+    <string name="external_storage_is_not_available">External storage is not available</string>
+    <string name="no_image_selected">No image selected</string>
 </resources>
