@@ -1,7 +1,6 @@
 package com.example.cartoon
 
 import android.Manifest
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -9,11 +8,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.shashank.sony.fancytoastlib.FancyToast
 
 class Notification(private val context: Context) {
 
@@ -28,7 +25,7 @@ class Notification(private val context: Context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
             != PackageManager.PERMISSION_GRANTED
         ) {
-             requestNotificationPermission()
+              Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         } else {
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(title)
@@ -60,16 +57,5 @@ class Notification(private val context: Context) {
         }
     }
 
-    public fun requestNotificationPermission() {
-        ActivityCompat.requestPermissions(
-            context as Activity,
-            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-            PERMISSION_REQUEST_CODE
-        )
-    }
-
-    companion object {
-        private const val PERMISSION_REQUEST_CODE = 128956
-    }
 }
 

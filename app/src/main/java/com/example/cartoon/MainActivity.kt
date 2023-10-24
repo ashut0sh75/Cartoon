@@ -1,8 +1,6 @@
 package com.example.cartoon
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -10,20 +8,18 @@ import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.cartoon.databinding.ActivityMainBinding
 import com.example.cartoon.ml.WhiteboxCartoonGanInt8
-import com.shashank.sony.fancytoastlib.FancyToast
 import org.tensorflow.lite.support.image.TensorImage
 import java.io.File
 import java.io.FileOutputStream
@@ -33,8 +29,6 @@ import java.io.OutputStream
 class MainActivity : ComponentActivity() {
 
     companion object {
-        // Request code for image selection
-        private const val REQUEST_CODE_IMAGE = 178956
 
         // Directory name for saving cartoon images
         private const val DIRECTORY_NAME = "CartoonImages"
@@ -42,7 +36,6 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var notification: Notification
     private lateinit var binding : ActivityMainBinding
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +56,7 @@ class MainActivity : ComponentActivity() {
         }
 
         notification = Notification(this)
-        notification.requestNotificationPermission()
+        requestPermissions.launch(Helpers.requiredPermissions())
 
 
         binding.Save.setOnClickListener {
@@ -75,12 +68,6 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(this@MainActivity, "No image selected", Toast.LENGTH_LONG).show()
 
             } else {
-              /*  notification.sendNotification(
-                    "Photo is saved",
-                    "Congratulations!",
-                    R.drawable.baseline_notifications_24,
-                    0
-                )*/
                 saveCartoonedImage()
             }
         }
@@ -88,7 +75,7 @@ class MainActivity : ComponentActivity() {
 
         // Set click listener for selecting an image
         binding.selectImagebtn.setOnClickListener {
-            fetchImageFromStorage()
+            fetchImageFromStorage.launch("image/*")
         }
 
         // Set click listener for converting the image to a cartoon
@@ -100,13 +87,22 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    private val fetchImageFromStorage: ActivityResultLauncher<String> = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let { imageUri ->
+            // Load the selected image into the ImageView using Glide
+                Glide.with(this@MainActivity.applicationContext)
+                    .load(imageUri)
+                    .into(binding.imageView)
 
-    private fun fetchImageFromStorage() {
-        // Create an intent to pick an image from external storage
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            // Remove the background by setting it to null
+            binding.imageView.background = null
+        }?:run {
+            Toast.makeText(this, R.string.msg_no_image_selected, Toast.LENGTH_SHORT);
+        }
+    }
 
-        // Start the activity to select an image and provide a request code
-        startActivityForResult(intent, REQUEST_CODE_IMAGE)
+    private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { _ ->
+        //Currently we are not doing any action based on user permissions so nothing needed here.
     }
 
     private fun convertImageToCartoon() {
@@ -235,26 +231,6 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Check if the result is for the image selection request
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
-            val imageUri = data?.data
-
-            // Load the selected image into the ImageView using Glide
-            if (imageUri != null) {
-                Glide.with(this)
-                    .load(imageUri)
-                    .into(binding.imageView)
-            }
-
-            // Remove the background by setting it to null
-            binding.imageView.background = null
-        }
-    }
-
-
 
     private fun inferenceWithInt8Model(sourceImage: TensorImage): TensorImage {
         // Create an instance of the WhiteboxCartoonGanInt8 model
@@ -298,6 +274,8 @@ class MainActivity : ComponentActivity() {
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
     }
+
+
 
 }
 
