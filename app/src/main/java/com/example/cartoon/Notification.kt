@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.example.cartoon.utils.ToastUtils.showToast
 
 class Notification(private val context: Context) {
 
@@ -25,7 +26,7 @@ class Notification(private val context: Context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
             != PackageManager.PERMISSION_GRANTED
         ) {
-              Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            context.showToast(message, Toast.LENGTH_SHORT);
         } else {
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(title)

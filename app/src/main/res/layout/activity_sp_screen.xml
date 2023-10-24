@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/txtTitle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pixelfont"
         android:gravity="center"
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/pcolor"
-        android:textSize="80dp"
+        android:textSize="@dimen/splash_txt_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

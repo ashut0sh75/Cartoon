@@ -9,13 +9,13 @@
 
     <TextView
         android:id="@+id/Cartoontxt"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/fifteen_dp"
         android:fontFamily="@font/pixelfont"
-        android:text="Cartoon"
+        android:text="@string/cartoon"
         android:textColor="@color/pcolor"
-        android:textSize="40sp"
+        android:textSize="@dimen/main_title_txt_size"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +23,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_margin="@dimen/ten_dp"
         android:contentDescription="@string/app_name"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,48 +40,51 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/two_fifty_dp"
+                android:layout_height="@dimen/two_fifty_dp"
+                android:layout_margin="@dimen/ten_dp"
                 android:background="@drawable/convert"
-                android:padding="5dp"
+                android:padding="@dimen/five_dp"
                 android:scaleType="fitCenter"
                 app:shapeAppearanceOverlay="@style/circular"
                 app:strokeColor="@color/black"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="@dimen/two_dp" />
 
             <Button
                 android:id="@+id/selectImagebtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/twenty_dp"
+                android:onClick="onClick"
                 android:background="@drawable/btn_bg"
                 android:fontFamily="@font/pixelfont"
-                android:text="SELECT IMAGE"
+                android:text="@string/select_image"
                 android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:textSize="@dimen/main_txt_size" />
 
             <Button
                 android:id="@+id/Convert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/twenty_dp"
+                android:onClick="onClick"
                 android:background="@drawable/btn_bg"
                 android:fontFamily="@font/pixelfont"
-                android:text="CONVERT IMAGE"
+                android:text="@string/convert_image"
                 android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:textSize="@dimen/main_txt_size" />
 
             <Button
                 android:id="@+id/Save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/twenty_dp"
+                android:onClick="onClick"
                 android:background="@drawable/btn_bg"
                 android:fontFamily="@font/pixelfont"
-                android:text="SAVE IMAGE"
+                android:text="@string/save_image"
                 android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:textSize="@dimen/main_txt_size" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

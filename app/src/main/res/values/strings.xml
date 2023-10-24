@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Cartoon</string>
     <string name="cartoon">Cartoon</string>
+    <string name="splash_screen_text">CARTOON!</string>
     <string name="msg_no_image_selected">No Image selected</string>
+    <string name="msg_image_saved">Image Saved</string>
+    <string name="err_msg_failed_to_save">Failed to save image!</string>
+    <string name="err_msg_external_storage_unavailable">External storage is not available</string>
+    <string name="notification_img_saved_title">Photo is saved</string>
+    <string name="notification_img_saved_message">Congratulations</string>
+    <string name="save_image">SAVE IMAGE</string>
+    <string name="convert_image">CONVERT IMAGE</string>
+    <string name="select_image">SELECT IMAGE</string>
+
 </resources>
