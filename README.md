@@ -1,6 +1,10 @@
 <div align="center"> 
 
 # Welcome to the Cartoon Repository!
+ <td align="center">
+      <h3></h3>
+      <img src="App Screenshots/CartoonIcon.png" width="300" height="250">
+    </td>
 
 ![](https://api.visitorbadge.io/api/VisitorHit?user=@ashut0sh75&repo=Cartoon&countColor=#7370fd)
  <br>
@@ -69,12 +73,12 @@ Below is the sample output of the current Machine Learning Model.
   <tr>
     <td align="center">
       <h3>Original Image</h3>
-      <img src="Original Image.jpg" width="300" height="200">
+      <img src="App Screenshots/Original Image.jpg" width="300" height="200">
     </td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <!-- Add multiple &nbsp; entities for spacing -->
     <td align="center">
       <h3>Cartoon Image</h3>
-      <img src="Cartoon Image.jpg" width="300" height="200">
+      <img src="App Screenshots/Cartoon Image.jpg" width="300" height="200">
     </td>
   </tr>
 </table>
